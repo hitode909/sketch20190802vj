@@ -8,7 +8,7 @@
 <body>
     <style>
         html,body {
-            background: black;
+            background: white;
             width: 100%;
             height: 100%;
             text-align: center;
@@ -18,8 +18,18 @@
             background-repeat: no-repeat;
             background-size: contain;
         }
+        marquee {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #shirt {
+            height: 100%;
+            width: auto;
+        }
     </style>
+    <img id="shirt">
+    <marquee scrollamount="20"><img src="https://teeparty.jp/upload/label_banner/156.png"></marquee>
     <script src="2.js"></script>
-    <marquee><img src="https://teeparty.jp/upload/label_banner/156.png"></marquee>
 </body>
 </html>
