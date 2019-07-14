@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        html,body {
+            background: black;
+            color: white;
+            width: 100vw;
+            height: 100vh;
+            overflow:hidden;
+        }
+        #player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+        .inputs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+        .inputs:hover {
+            opacity: 1.0;
+        }
+        input {
+            width: 60vw;
+        }
+    </style>
+    <div id="player" width="560" height="315"></div>
+    <div class="inputs">
+        <div><label>video<input type="text" name="videoId" value="Sn5un50TLZg"></label></div>
+        <div><label>seekTo<input type="range" name="seekTo" min="0" max="60" value="2" step="0.1"></label></div>
+        <div><label>interval<input type="range" name="interval" min="0" max="10000" value="2000" step="1"></label></div>
+        <div><label>playbackRate<input type="range" name="playbackRate" min="0" max="10" value="1.0" step="0.1"></label></div>
+        <div><button id="sync">Tap</button></div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="6.js"></script>
+</body>
+</html>
