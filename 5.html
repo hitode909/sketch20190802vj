@@ -14,7 +14,7 @@
             height: 100%;
             text-align: center;
         }
-        #diff {
+        input[type="range"] {
             width: 70vh;
         }
         #char {
@@ -22,7 +22,8 @@
         }
     </style>
     <input type="text" id="from" length="1" value="😀">
-    <input type="range" id="diff" min="0" max="1000" value="4">
+    <input type="range" id="diff" min="0" max="1000" value="4"><br>
+    <input type="range" id="interval" min="1" max="1000" value="300">
     <br>
     <span id="char"></span>
     <script src="5.js"></script>
