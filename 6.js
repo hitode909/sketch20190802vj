@@ -54,3 +54,4 @@ function onPlayerReady(event) {
 
     document.querySelector('#sync').addEventListener('mousedown', observe);
 }
+
