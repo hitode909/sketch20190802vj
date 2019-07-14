@@ -12,6 +12,36 @@ const collectParameters = () => {
     return result;
 }
 
+class Tapper {
+    constructor(input, tapButton) {
+        this.input = input;
+        this.tapButton = tapButton;
+        this.input.addEventListener('change', () => {
+            this.change();
+        });
+        this.tapButton.addEventListener('mousedown', () => {
+            this.tap();
+        });
+        this.tappedAt = [];
+    }
+    tap() {
+        this.tappedAt.push(new Date().getTime());
+        if (this.tappedAt.length > 4) this.tappedAt.shift();
+        if (this.tappedAt.length < 2) return;
+        let durations = 0;
+        for (let i = 0; i < this.tappedAt.length - 1; i++) {
+            durations += this.tappedAt[i + 1] - this.tappedAt[i];
+        }
+        durations /= this.tappedAt.length - 1;
+        this.input.value = durations;
+        console.log(durations);
+    }
+    change() {
+        console.log('clear');
+        this.tappedAt = [];
+    }
+}
+
 var player;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
@@ -32,7 +62,7 @@ const autoMode = () => {
     if (!parameters.autoMode) return;
     if (Math.random() > 0.3) return;
 
-    document.querySelectorAll('input[type="range"]').forEach((i) => {
+    document.querySelectorAll('input.auto').forEach((i) => {
         i.value = Math.random() * i.max;
     });
 };
@@ -68,6 +98,10 @@ function onPlayerReady(event) {
     player.setVolume(0);
     observe();
 
-    document.querySelector('#sync').addEventListener('mousedown', observe);
+    document.querySelector('#tap').addEventListener('mousedown', observe);
 }
 
+new Tapper(
+    document.querySelector('input[name="interval"]'),
+    document.querySelector('button#tap'),
+);
