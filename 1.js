@@ -1,9 +1,9 @@
 const mochi = (level) => {
     let result = ['D', 'J', ' '];
     let chars = ['モ', 'チ'];
-    if (Math.random() > 0.5) {
-        chars.push(chars.shift());
-    }
+    // if (Math.random() > 0.5) {
+    //     chars.push(chars.shift());
+    // }
     for (let i = 0; i < level; i += 5) {
         result.push(chars[0]);
         chars.push(chars.shift());
@@ -38,7 +38,7 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream)
         const average = sum / data.length;
         h1.style.fontSize = average + 'px';
         h1.textContent = mochi(average);
-        body.style.backgroundColor = bgcolor();
+        // body.style.backgroundColor = bgcolor();
 
         requestAnimationFrame(render);
     };
