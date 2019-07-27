@@ -19,27 +19,16 @@ const bgcolor = () => {
     return `hsl(${h}, 100%, 70%)`;
 }
 
-navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaStreamSource(stream);
-    source.connect(analyser);
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    const body = document.body;
-    const h1 = document.querySelector('h1');
-    const render = () => {
-        analyser.getByteFrequencyData(data);
-        let sum = 0;
-        for (var i = 0; i < data.length; i++) {
-            sum += data[i];
-        }
-        const average = sum / data.length;
-        h1.style.fontSize = average + 'px';
-        console.log(average);
-        h1.textContent = mochi(average);
-        body.style.backgroundColor = average > 100 ? bgcolor() : 'black';
+const volume = new VolumeAverage();
 
-        requestAnimationFrame(render);
-    };
-    render();
-});
+const body = document.body;
+const h1 = document.querySelector('h1');
+const render = () => {
+    const average = volume.getVolume();
+    h1.style.fontSize = average + 'px';
+    h1.textContent = mochi(average);
+    body.style.backgroundColor = average > 100 ? bgcolor() : 'black';
+
+    requestAnimationFrame(render);
+};
+render();

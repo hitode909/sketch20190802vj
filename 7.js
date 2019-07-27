@@ -26,12 +26,14 @@ function initMap() {
     //     map.setCenter(center);
     // }, 4000);
 
+    const volume = new VolumeAverage();
+
     const step = () => {
         const pov = panorama.getPov();
         pov.heading = (new Date().getTime() / 100.0) % 360;
-        pov.pitch = Math.sin(new Date().getTime() / 1000.0) * 30;
+        // pov.pitch = Math.sin(new Date().getTime() / 1000.0) * 30;
         panorama.setPov(pov);
-        // panorama.setZoom((Math.sin(new Date().getTime() / 500.0)+ 1.0) * 2);
+        panorama.setZoom(volume.getVolume() / 60.0);
         requestAnimationFrame(step);
     };
     step();
