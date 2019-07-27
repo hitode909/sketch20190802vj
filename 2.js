@@ -2,12 +2,19 @@ const images = ["https://teeparty.jp/upload/save_image/10496.jpg", "https://teep
 
 const shirt = document.querySelector('#shirt');
 
+const intervalInput = document.querySelector('input[name="interval"]');
+new Tapper(
+    document.querySelector('input[name="interval"]'),
+    document.querySelector('button#tap'),
+);
+
 const step = () => {
+        setTimeout(() => {
+            step();
+        }, intervalInput.value);
     const image = images[Math.floor(images.length * Math.random())];
     shirt.src = image;
     images.push(image);
 };
 
-setInterval(() => {
-    step();
-}, 100)
+step();

@@ -1,6 +1,5 @@
 const from = document.querySelector('#from');
 const diffInput = document.querySelector('#diff');
-const intervalInput = document.querySelector('input[name="interval"]');
 const char = document.querySelector('#char');
 
 let i = 0;
@@ -13,6 +12,7 @@ const nextEmoji = () => {
     return String.fromCodePoint(base + (i++ % (diff+1)));
 };
 
+const intervalInput = document.querySelector('input[name="interval"]');
 new Tapper(
     document.querySelector('input[name="interval"]'),
     document.querySelector('button#tap'),

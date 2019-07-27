@@ -25,8 +25,6 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream)
     const source = audioCtx.createMediaStreamSource(stream);
     source.connect(analyser);
     const data = new Uint8Array(analyser.frequencyBinCount);
-
-    let volume = 1.0;
     const body = document.body;
     const h1 = document.querySelector('h1');
     const render = () => {
@@ -37,8 +35,9 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream)
         }
         const average = sum / data.length;
         h1.style.fontSize = average + 'px';
+        console.log(average);
         h1.textContent = mochi(average);
-        // body.style.backgroundColor = bgcolor();
+        body.style.backgroundColor = average > 100 ? bgcolor() : 'black';
 
         requestAnimationFrame(render);
     };

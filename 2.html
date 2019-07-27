@@ -27,9 +27,15 @@
             height: 100%;
             width: auto;
         }
+        .control {
+            position: absolute;
+            bottom: 2em;
+        }
     </style>
+    <div class="control"><button id="tap">Tap</button><label>interval<input type="range" name="interval" min="0" max="5000" value="1000" step="1"></label></div>
     <img id="shirt">
     <marquee scrollamount="20"><img src="https://teeparty.jp/upload/label_banner/156.png"></marquee>
+    <script src="Tapper.js"></script>
     <script src="2.js"></script>
 </body>
 </html>
