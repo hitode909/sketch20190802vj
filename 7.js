@@ -10,30 +10,29 @@ function initMap() {
     var panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
             position: center,
-            // pov: {
-            //     heading: 34,
-            //     pitch: 10
-            // },
             zoom: 0,
-            // disableDefaultUI: true,
+            disableDefaultUI: true,
         });
     map.setStreetView(panorama);
 
-    setInterval(() => {
-        if (panorama.getStatus() !== 'OK') {
-            // location.reload();
-        }
-        const speed = 1;
-        center.lat += Math.random() * speed - speed / 2;
-        center.lng += Math.random() * speed - speed / 2;
-        panorama.setPosition(center);
-        map.setCenter(center);
-    }, 4000);
-
     // setInterval(() => {
-    //     const pov = panorama.getPov();
-    //     pov.heading = (new Date().getTime() / 50.0) % 360;
-    //     pov.pitch = Math.sin(new Date().getTime() / 1000.0) * 30;
-    //     panorama.setPov(pov);
-    // }, 40);
+    //     if (panorama.getStatus() !== 'OK') {
+    //         // location.reload();
+    //     }
+    //     const speed = 1;
+    //     center.lat += Math.random() * speed - speed / 2;
+    //     center.lng += Math.random() * speed - speed / 2;
+    //     panorama.setPosition(center);
+    //     map.setCenter(center);
+    // }, 4000);
+
+    const step = () => {
+        const pov = panorama.getPov();
+        pov.heading = (new Date().getTime() / 100.0) % 360;
+        pov.pitch = Math.sin(new Date().getTime() / 1000.0) * 30;
+        panorama.setPov(pov);
+        // panorama.setZoom((Math.sin(new Date().getTime() / 500.0)+ 1.0) * 2);
+        requestAnimationFrame(step);
+    };
+    step();
 }
