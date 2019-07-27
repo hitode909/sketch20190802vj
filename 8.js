@@ -18,7 +18,7 @@ const setupElement = (marquee, title, lines) => {
     } else {
         marquee.style.color = 'white';
     }
-    marquee.scrollAmount = Math.random() * 100 + 50;
+    marquee.scrollAmount = Math.random() * 100 + 20;
     document.body.appendChild(marquee);
 };
 
