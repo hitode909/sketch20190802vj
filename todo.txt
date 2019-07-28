@@ -3,3 +3,4 @@ inputがからならこれ、そうでなければ、みたいな
 音量と文字は常に同期するようにする
 1文字ずつシフトするボタン
 BPMボタン
+https://developer.mozilla.org/ja/docs/Web/CSS/mix-blend-mode
