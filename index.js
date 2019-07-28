@@ -1,7 +1,6 @@
 class Controller {
-    constructor(fxs) {
+    constructor() {
         this.inputs = document.querySelectorAll('input');
-        this.fxs = fxs;
 
         this.inputs.forEach(input => {
             input.addEventListener('change', () => {
@@ -9,12 +8,17 @@ class Controller {
                 this.onParametersChange();
             });
         })
+        this.fxs = [];
+    }
+    setFxs(fxs) {
+        this.fxs = fxs;
         this.onParametersChange();
     }
 
     onParametersChange() {
         const parameters = this.collectParameters();
         for (let fx of this.fxs) {
+            fx.onParametersChangeTogggleDisplay(parameters);
             fx.onParametersChange(parameters);
         }
     }
@@ -31,6 +35,7 @@ class Controller {
         return result;
     }
 }
+const controller = new Controller();
 
 class Animator {
     constructor(screenName) {
@@ -40,7 +45,8 @@ class Animator {
 
     onFrame() { }
     onBeat() { }
-    onParametersChange(parameters) {
+    onParametersChange(parameters) { }
+    onParametersChangeTogggleDisplay(parameters) {
         const screenKey = `display-${this.screenName}`;
         this.screen.classList.toggle('hidden', !parameters[screenKey]);
     }
@@ -81,7 +87,7 @@ class MochiText extends Animator {
 
     onFrame(volume) {
         this.text.textContent = this.mochi(volume);
-        this.text.style.fontSize = volume + 'px';
+        this.text.style.fontSize = volume + 'vh';
     }
 };
 
@@ -100,6 +106,41 @@ class Shirts extends Animator {
     }
 }
 
+class Emoji extends Animator {
+    constructor(selector) {
+        super(selector);
+        this.text = this.screen.querySelector('.text');
+        this.i = 0;
+    }
+
+    onParametersChange(parameters) {
+        if (parameters['emoji-start']) {
+            this.base = parameters['emoji-start'].codePointAt(0);
+        }
+        this.range = + parameters['emoji-range'];
+        this.length = + parameters['emoji-length'];
+    }
+
+    nextEmoji() {
+        return String.fromCodePoint(this.base + (this.i++ % (this.range+1)));
+    }
+
+    onBeat() {
+        const parameters = controller.collectParameters();
+        this.onParametersChange(parameters);
+        const emoji = this.nextEmoji();
+        let content = '';
+        for (let i = 0; i < this.length; i++) {
+            content += emoji;
+        }
+        this.text.textContent = content;
+    }
+
+    onFrame(volume) {
+        this.text.style.fontSize = volume * 3 + 'vh';
+    }
+}
+
 const volume = new VolumeAverage();
 const tapper = new Tapper(
     document.querySelector('input[name="interval"]'),
@@ -109,8 +150,9 @@ const fxs = [
     new Flash('flash'),
     new MochiText('dj-name'),
     new Shirts('shirts'),
+    new Emoji('emoji'),
 ];
-new Controller(fxs);
+controller.setFxs(fxs);
 
 const render = () => {
     const average = volume.getVolume();

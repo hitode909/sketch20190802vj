@@ -11,15 +11,24 @@
     <div class="screen dj-name">
         <h1 class="text">hello!</h1>
     </div>
+    <div class="screen emoji">
+            <h1 class="text"></h1>
+        </div>
 
     <div class="controls">
         <div class="control">
                 <label><input type="checkbox" name="display-shirts">shirts</label>
                 <label><input type="checkbox" name="display-flash">flash</label>
-            <label><input type="checkbox" name="display-dj-name" checked>name</label>
+                <label><input type="checkbox" name="display-dj-name" checked>name</label>
+                <label><input type="checkbox" name="display-emoji">emoji</label>
         </div>
         <div class="control">
-            <button id="tap">Tap</button><label>interval<input type="range" name="interval" min="0" max="5000" value="1000" step="1"></label>
+            <button id="tap">Tap</button><label>interval<input type="range" name="interval" min="0" max="5000" value="500" step="1"></label>
+        </div>
+        <div class="control">
+            <input name="emoji-start" type="text" id="from" length="1" value="😀">
+            <input name="emoji-range" type="range" id="diff" min="0" max="64" value="4"><br>
+            <input name="emoji-length" type="range" id="diff" min="1" max="128" value="1"><br>
         </div>
     </div>
 
