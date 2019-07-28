@@ -1,5 +1,6 @@
 body {
     background: black;
+    color: white;
 }
 html,body {
     width: 100vw;
@@ -10,7 +11,6 @@ html,body {
 }
 
 .screen {
-    color: white;
     font-weight: bold;
     position: absolute;
     left: 0;
@@ -22,4 +22,13 @@ html,body {
     flex-direction: column;
     justify-content: center;
     pointer-events: none;
+}
+
+.controls {
+    position: absolute;
+    bottom: 2em;
+    opacity: 0;
+}
+.controls:hover {
+    opacity: 1.0;
 }
