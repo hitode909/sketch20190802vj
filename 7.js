@@ -33,7 +33,7 @@ function initMap() {
         pov.heading = (new Date().getTime() / 100.0) % 360;
         // pov.pitch = Math.sin(new Date().getTime() / 1000.0) * 30;
         panorama.setPov(pov);
-        panorama.setZoom(volume.getVolume() / 60.0);
+        // panorama.setZoom(volume.getVolume() / 60.0);
         requestAnimationFrame(step);
     };
     step();

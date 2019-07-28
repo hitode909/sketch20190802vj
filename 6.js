@@ -12,10 +12,18 @@ const collectParameters = () => {
     return result;
 }
 
+const extractVideoId = (input) => {
+    const videoId = input.match(/v\=(.+)$/);
+    if (videoId) {
+        return videoId[1];
+    }
+    return input;
+}
+
 var player;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-        videoId: collectParameters().videoId,
+        videoId: extractVideoId(collectParameters().videoId),
         playerVars: {
             origin: location.protocol + '//' + location.hostname + "/",
             enablejsapi: 1,
@@ -45,8 +53,11 @@ const observe = () => {
     }
     document.querySelector('input[name="seekTo"]').max = player.getDuration();
     const parameters = collectParameters();
-    if (parameters.videoId !== new URL(player.getVideoUrl()).searchParams.get('v')) {
-        player.loadVideoById(parameters.videoId, + parameters.seekTo);
+    const videoId = extractVideoId(collectParameters().videoId);
+    if (videoId !== new URL(player.getVideoUrl()).searchParams.get('v')) {
+        document.querySelector('input[name="seekTo"]').value = 0;
+        parameters.seekTo = 0;
+        player.loadVideoById(videoId, + parameters.seekTo);
     }
 
     autoMode();
@@ -75,3 +86,10 @@ new Tapper(
     document.querySelector('input[name="interval"]'),
     document.querySelector('button#tap'),
 );
+
+const videoInput = document.querySelector('input[name="videoId"]');
+const videoIdKey = 'videoId';
+document.addEventListener('change', () => {
+    localStorage.setItem(videoIdKey, videoInput.value);
+});
+videoInput.value = localStorage.getItem(videoIdKey) || 'Kd-Va1m4s1E';

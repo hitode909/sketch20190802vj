@@ -15,7 +15,7 @@ const mochi = (level) => {
     return result.join('');
 };
 const bgcolor = () => {
-    const h = (new Date().getTime() / 10) % 360;
+    const h = (new Date().getTime()) % 360;
     return `hsl(${h}, 100%, 70%)`;
 }
 
@@ -27,7 +27,7 @@ const render = () => {
     const average = volume.getVolume();
     h1.style.fontSize = average + 'px';
     h1.textContent = mochi(average);
-    body.style.backgroundColor = average > 100 ? bgcolor() : 'black';
+    body.style.backgroundColor = average > 100 ? bgcolor() : 'transparent';
 
     requestAnimationFrame(render);
 };
