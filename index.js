@@ -1,10 +1,49 @@
+class Controller {
+    constructor(fxs) {
+        this.inputs = document.querySelectorAll('input');
+        this.fxs = fxs;
+
+        this.inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                input.title = input.value;
+                this.onParametersChange();
+            });
+        })
+        this.onParametersChange();
+    }
+
+    onParametersChange() {
+        const parameters = this.collectParameters();
+        for (let fx of this.fxs) {
+            fx.onParametersChange(parameters);
+        }
+    }
+
+    collectParameters() {
+        const result = {};
+        for ( let i of this.inputs) {
+            if (i.type === 'checkbox') {
+                result[i.name] = i.checked;
+            } else {
+                result[i.name] = i.value;
+            }
+        }
+        return result;
+    }
+}
+
 class Animator {
-    constructor(screenSelector) {
-        this.screen = document.querySelector(screenSelector);
+    constructor(screenName) {
+        this.screenName = screenName;
+        this.screen = document.querySelector(`.screen.${screenName}`);
     }
 
     onFrame() { }
-    onBeat() {}
+    onBeat() { }
+    onParametersChange(parameters) {
+        const screenKey = `display-${this.screenName}`;
+        this.screen.classList.toggle('hidden', !parameters[screenKey]);
+    }
 }
 
 class Flash extends Animator {
@@ -67,10 +106,11 @@ const tapper = new Tapper(
     document.querySelector('button#tap'),
 );
 const fxs = [
-    new Flash('.screen.flash'),
-    new MochiText('.screen.mochi-text'),
-    new Shirts('.screen.shirts'),
+    new Flash('flash'),
+    new MochiText('dj-name'),
+    new Shirts('shirts'),
 ];
+new Controller(fxs);
 
 const render = () => {
     const average = volume.getVolume();

@@ -23,6 +23,9 @@ html,body {
     justify-content: center;
     pointer-events: none;
 }
+.screen.hidden {
+    display: none;
+}
 
 .controls {
     position: absolute;
