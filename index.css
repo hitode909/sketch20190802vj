@@ -27,10 +27,19 @@ html,body {
     display: none;
 }
 
+.screen.shirts {
+    background: white;
+}
+.screen.shirts img {
+    height: 100vh;
+    width: auto;
+}
+
 .controls {
     position: absolute;
     bottom: 2em;
     opacity: 0;
+    background: rgba(0,0,0,0.5);
 }
 .controls:hover {
     opacity: 1.0;
