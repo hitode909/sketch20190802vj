@@ -19,7 +19,7 @@ class Controller {
         const parameters = this.collectParameters();
         for (let fx of this.fxs) {
             fx.onParametersChangeTogggleDisplay(parameters);
-            fx.onParametersChange(parameters);
+            if (fx.isActive) fx.onParametersChange(parameters);
         }
     }
 
@@ -41,6 +41,7 @@ class Animator {
     constructor(screenName) {
         this.screenName = screenName;
         this.screen = document.querySelector(`.screen.${screenName}`);
+        this.isActive = false;
     }
 
     onFrame() { }
@@ -48,7 +49,8 @@ class Animator {
     onParametersChange(parameters) { }
     onParametersChangeTogggleDisplay(parameters) {
         const screenKey = `display-${this.screenName}`;
-        this.screen.classList.toggle('hidden', !parameters[screenKey]);
+        this.isActive = parameters[screenKey];
+        this.screen.classList.toggle('hidden', ! this.isActive);
     }
 }
 
@@ -59,7 +61,7 @@ class Flash extends Animator {
     }
 
     onFrame(volume) {
-        this.screen.style.backgroundColor = volume > 50 ? this.flash() : 'transparent';
+        this.screen.style.backgroundColor = volume > 30 ? this.flash() : 'transparent';
     }
 }
 
@@ -157,7 +159,7 @@ controller.setFxs(fxs);
 const render = () => {
     const average = volume.getVolume();
     for (let fx of fxs) {
-        fx.onFrame(average);
+        if (fx.isActive) fx.onFrame(average);
     }
 
     requestAnimationFrame(render);
@@ -169,7 +171,7 @@ const onBeat = () => {
         onBeat();
     }, tapper.input.value);
     for (let fx of fxs) {
-        fx.onBeat();
+        if (fx.isActive) fx.onBeat();
     }
 };
 

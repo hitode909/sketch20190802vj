@@ -4,3 +4,5 @@ inputがからならこれ、そうでなければ、みたいな
 1文字ずつシフトするボタン
 BPMボタン
 https://developer.mozilla.org/ja/docs/Web/CSS/mix-blend-mode
+
+ループ検出、のばしを自動化
