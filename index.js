@@ -33,8 +33,29 @@ class Tapper {
             this.tap();
         });
         this.tappedAt = [];
+        this.fxs = [];
+    }
+    setFxs(fxs) {
+        this.fxs = fxs;
+        this.onBeatCallbacks();
     }
     tap() {
+        this.onBeatCallbacks();
+        this.calculate();
+    }
+    onBeatCallbacks() {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(() => {
+            this.onBeatCallbacks();
+        }, tapper.input.value);
+        for (let fx of this.fxs) {
+            if (fx.isActive) fx.onBeat();
+        }
+
+    }
+    calculate() {
         this.tappedAt.push(new Date().getTime());
         if (this.tappedAt.length > 4)
             this.tappedAt.shift();
@@ -215,16 +236,11 @@ class YouTube extends Animator {
     }
     onPlayerReady(event) {
         this.player.setVolume(0);
-        this.observe();
+        // this.observe();
         // document.querySelector('#tap').addEventListener('mousedown', observe);
     }
-    observe () {
-        if (this.timer) {
-            clearTimeout(this.timer);
-            this.timer = null;
-        }
+    onBeat () {
         const parameters = controller.collectParameters();
-        this.timer = setTimeout(() => { this.observe() }, + parameters.interval);
         const player = this.player;
         if (!player) return;
         document.querySelector('input[name="seekTo"]').max = player.getDuration();
@@ -239,8 +255,6 @@ class YouTube extends Animator {
         player.seekTo(+ parameters.seekTo);
         player.setPlaybackRate(+ parameters.playbackRate);
         player.playVideo();
-
-
     };
 
     autoMode() {
@@ -280,6 +294,7 @@ const fxs = [
     youtube,
 ];
 controller.setFxs(fxs);
+tapper.setFxs(fxs);
 
 const render = () => {
     const average = volume.getVolume();
@@ -290,14 +305,3 @@ const render = () => {
     requestAnimationFrame(render);
 };
 render();
-
-const onBeat = () => {
-    setTimeout(() => {
-        onBeat();
-    }, tapper.input.value);
-    for (let fx of fxs) {
-        if (fx.isActive) fx.onBeat();
-    }
-};
-
-onBeat();
