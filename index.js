@@ -1,3 +1,59 @@
+class VolumeAverage {
+    constructor() {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioCtx.createAnalyser();
+            const source = audioCtx.createMediaStreamSource(stream);
+            source.connect(analyser);
+            this.analyser = analyser;
+            this.data = new Uint8Array(analyser.frequencyBinCount);
+        });
+    }
+    getVolume() {
+        if (!this.data)
+            return 0;
+        this.analyser.getByteFrequencyData(this.data);
+        let sum = 0;
+        const length = this.data.length;
+        for (var i = 0; i < length; i++) {
+            sum += this.data[i];
+        }
+        return sum / length;
+    }
+}
+
+class Tapper {
+    constructor(input, tapButton) {
+        this.input = input;
+        this.tapButton = tapButton;
+        this.input.addEventListener('change', () => {
+            this.change();
+        });
+        this.tapButton.addEventListener('mousedown', () => {
+            this.tap();
+        });
+        this.tappedAt = [];
+    }
+    tap() {
+        this.tappedAt.push(new Date().getTime());
+        if (this.tappedAt.length > 4)
+            this.tappedAt.shift();
+        if (this.tappedAt.length < 2)
+            return;
+        let durations = 0;
+        for (let i = 0; i < this.tappedAt.length - 1; i++) {
+            durations += this.tappedAt[i + 1] - this.tappedAt[i];
+        }
+        durations /= this.tappedAt.length - 1;
+        this.input.value = durations;
+        console.log(durations);
+    }
+    change() {
+        console.log('clear');
+        this.tappedAt = [];
+    }
+}
+
 class Controller {
     constructor() {
         this.inputs = document.querySelectorAll('input');
@@ -143,6 +199,74 @@ class Emoji extends Animator {
     }
 }
 
+class YouTube extends Animator {
+    onIframeAPIReady() {
+        this.player = new YT.Player('youtube-video', {
+            videoId: this.extractVideoId(controller.collectParameters().videoId),
+            playerVars: {
+                origin: location.protocol + '//' + location.hostname + "/",
+                enablejsapi: 1,
+                controls: 0,
+            },
+            events: {
+                'onReady': () => { this.onPlayerReady() },
+            }
+        });
+    }
+    onPlayerReady(event) {
+        this.player.setVolume(0);
+        this.observe();
+        // document.querySelector('#tap').addEventListener('mousedown', observe);
+    }
+    observe () {
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
+        const parameters = controller.collectParameters();
+        this.timer = setTimeout(() => { this.observe() }, + parameters.interval);
+        const player = this.player;
+        if (!player) return;
+        document.querySelector('input[name="seekTo"]').max = player.getDuration();
+        const videoId = this.extractVideoId(parameters.videoId);
+        if (videoId !== new URL(player.getVideoUrl()).searchParams.get('v')) {
+            document.querySelector('input[name="seekTo"]').value = 0;
+            parameters.seekTo = 0;
+            player.loadVideoById(videoId, + parameters.seekTo);
+        }
+
+        this.autoMode();
+        player.seekTo(+ parameters.seekTo);
+        player.setPlaybackRate(+ parameters.playbackRate);
+        player.playVideo();
+
+
+    };
+
+    autoMode() {
+        const parameters = controller.collectParameters();
+        if (!parameters.autoMode) return;
+        if (Math.random() > 0.3) return;
+
+        document.querySelectorAll('input.auto').forEach((i) => {
+            i.value = Math.random() * i.max;
+        });
+    }
+    extractVideoId(input) {
+        const videoId = input.match(/v\=(.+)$/);
+        if (videoId) {
+            return videoId[1];
+        }
+        return input;
+    }
+}
+
+const youtube = new YouTube('youtube');
+
+function onYouTubeIframeAPIReady() {
+    youtube.onIframeAPIReady();
+}
+
 const volume = new VolumeAverage();
 const tapper = new Tapper(
     document.querySelector('input[name="interval"]'),
@@ -153,6 +277,7 @@ const fxs = [
     new MochiText('dj-name'),
     new Shirts('shirts'),
     new Emoji('emoji'),
+    youtube,
 ];
 controller.setFxs(fxs);
 
