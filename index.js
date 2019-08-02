@@ -325,7 +325,7 @@ class YouTube extends Animator {
 
 const setupVideoIds = () => {
     const datalist = document.querySelector('#youtube-ids');
-    [
+    const videos = [
         'Dream Road https://www.youtube.com/watch?v=EC19AV19rEg',
         '次々続々 https://www.youtube.com/watch?v=PdgtxpNv6mw',
         'Help me!! https://www.youtube.com/watch?v=adKxssyO5iE',
@@ -344,11 +344,23 @@ const setupVideoIds = () => {
         'fiesta https://www.youtube.com/watch?v=0SMjNmSwFic',
         'サンバ https://www.youtube.com/watch?v=iw8r6jjtc2Y',
         '太鼓 https://www.youtube.com/watch?v=A3o30YJiWsc',
-    ].forEach(value => {
+    ];
+    videos.forEach(value => {
         const option = document.createElement('option');
         option.value = value;
         datalist.appendChild(option);
     });
+
+    let i = 0;
+    const seek = (diff) => {
+        i += diff;
+        i %= videos.length;
+        document.querySelector('input[name="videoId"]').value = videos[i];
+    };
+    seek(0);
+
+    document.querySelector('button[name="prev-video"]').addEventListener('click', () => { seek(-1); });
+    document.querySelector('button[name="next-video"]').addEventListener('click', () => { seek(+1); });
 };
 setupVideoIds();
 
