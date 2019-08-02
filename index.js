@@ -151,6 +151,7 @@ class MochiText extends Animator {
     constructor(selector) {
         super(selector);
         this.text = this.screen.querySelector('.text');
+        this.messageInput = document.querySelector('input[name="message"]');
     }
     mochi(level) {
         let result = ['D', 'J', ' '];
@@ -170,7 +171,11 @@ class MochiText extends Animator {
     }
 
     onFrame(volume) {
-        this.text.textContent = this.mochi(volume);
+        if (this.messageInput.value) {
+            this.text.textContent = this.messageInput.value;
+        } else {
+            this.text.textContent = this.mochi(volume);
+        }
         this.text.style.fontSize = volume + 'vh';
     }
 };
@@ -352,6 +357,22 @@ setupBlend();
 
 const setupVideoIds = () => {
     const datalist = document.querySelector('#youtube-ids');
+    const titles = [
+        'Juice=Juice『Dream Road～心が躍り出してる～』',
+        'アンジュルム『次々続々』',
+        'モーニング娘。 『Help me!!』',
+        'モーニング娘。 「One・Two・Three」',
+        'Juice=Juice 鳴り始めた恋のBELL',
+        '１０人祭 - ダンシング！夏祭り ',
+        'アンジュルム『46億年LOVE』',
+        "モーニング娘。'19『青春Night』",
+        "モーニング娘。 The 摩天楼ショー",
+        "スマイレージ 「好きよ、純情反抗期。」",
+        "スマイレージ 「夢見る １５歳」",
+        "つばきファクトリー『今夜だけ浮かれたかった』",
+        "Juice=Juice『Fiesta! Fiesta!』",
+        "こぶしファクトリー『サンバ！こぶしジャネイロ』",
+    ];
     const videos = [
         'https://www.youtube.com/watch?v=EC19AV19rEg', // Dream Road
         'https://www.youtube.com/watch?v=PdgtxpNv6mw', // 次々続々
@@ -380,6 +401,7 @@ const setupVideoIds = () => {
         i += videos.length;
         i %= videos.length;
         document.querySelector('input[name="videoId"]').value = videos[i];
+        document.querySelector('input[name="message"]').value = titles[i];
     };
     seek(0);
 
