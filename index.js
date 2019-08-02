@@ -257,14 +257,7 @@ class Giphy extends Animator {
         const parameters = controller.collectParameters();
         this.onParametersChange(parameters);
         const url = this.nextImage();
-        if (parameters['giphy-blink']) {
-            const hidden = this.i % 2;
-            this.imgElement.classList.toggle('hidden', hidden);
-            if (hidden) return;
-        }
-        if (url) {
-            this.imgElement.src = url;
-        }
+        this.imgElement.src = url;
     }
 }
 
