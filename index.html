@@ -39,7 +39,7 @@
             <div><label>emoji length<input name="emoji-length" type="range" id="diff" min="1" max="128" value="1"></label></div>
         </div>
         <div class="control">
-            <div><label>video<input type="text" name="videoId" value="Kd-Va1m4s1E"></label></div>
+            <div><label>video<input type="text" name="videoId" value="Kd-Va1m4s1E" list="youtube-ids"></label></div>
             <div><label>seekTo<input class="auto" type="range" name="seekTo" min="0" max="300" value="5" step="0.1"></label></div>
             <div><label>playbackRate<input class="auto" type="range" name="playbackRate" min="0" max="2" value="1.8" step="0.1"></label></div>
             <div><label>autoMode<input type="checkbox" name="autoMode"></label></div>
@@ -49,6 +49,11 @@
             <div><label>blink<input type="checkbox" name="giphy-blink"></label></div>
         </div>
     </div>
+
+
+    <datalist id="youtube-ids">
+    </datalist>
+
 
     <link rel="stylesheet" href="index.css">
     <script src="https://www.youtube.com/iframe_api"></script>

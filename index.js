@@ -323,6 +323,35 @@ class YouTube extends Animator {
     }
 }
 
+const setupVideoIds = () => {
+    const datalist = document.querySelector('#youtube-ids');
+    [
+        'Dream Road https://www.youtube.com/watch?v=EC19AV19rEg',
+        '次々続々 https://www.youtube.com/watch?v=PdgtxpNv6mw',
+        'Help me!! https://www.youtube.com/watch?v=adKxssyO5iE',
+        'One Two Three https://www.youtube.com/watch?v=z2VLNZYyAaE',
+        '鳴り始めた https://www.youtube.com/watch?v=cHBC2_fVgvo',
+        '夏祭り https://www.youtube.com/watch?v=HXNfPdyozo8',
+        '盆踊り https://www.youtube.com/watch?v=e7SoUIKWkqc',
+        'NHKスペシャル https://www.youtube.com/watch?v=ObvoUWY-K2k',
+        '46 https://www.youtube.com/watch?v=njCe2i91kWo',
+        'Night https://www.youtube.com/watch?v=SKgFDdDyKLE',
+        '摩天楼 https://www.youtube.com/watch?v=p_y7sJpk09I',
+        'earphones https://www.youtube.com/watch?v=1-QEzsc6Q_U',
+        '純情反抗期 https://www.youtube.com/watch?v=5kPe_AEC3h8',
+        '15 https://www.youtube.com/watch?v=CzNd9EnGiIM',
+        '今夜 https://www.youtube.com/watch?v=E8Y7QBhU6Co',
+        'fiesta https://www.youtube.com/watch?v=0SMjNmSwFic',
+        'サンバ https://www.youtube.com/watch?v=iw8r6jjtc2Y',
+        '太鼓 https://www.youtube.com/watch?v=A3o30YJiWsc',
+    ].forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        datalist.appendChild(option);
+    });
+};
+setupVideoIds();
+
 const youtube = new YouTube('youtube');
 
 function onYouTubeIframeAPIReady() {
