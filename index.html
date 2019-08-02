@@ -10,6 +10,9 @@
     <div class="screen youtube">
         <div id="youtube-video" width="560" height="315"></div>
     </div>
+    <div class="screen giphy">
+        <img>
+    </div>
     <div class="screen flash"></div>
     <div class="screen dj-name">
         <h1 class="text">hello!</h1>
@@ -20,11 +23,12 @@
 
     <div class="controls">
         <div class="control">
-                <label><input type="checkbox" name="display-shirts">shirts</label>
-                <label><input type="checkbox" name="display-youtube">youtube</label>
-                <label><input type="checkbox" name="display-flash">flash</label>
-                <label><input type="checkbox" name="display-dj-name" checked>name</label>
-                <label><input type="checkbox" name="display-emoji">emoji</label>
+                <div>shirts <input type="checkbox" name="display-shirts-0"> <input type="checkbox" name="display-shirts-1"> <input type="checkbox" name="display-shirts-2"> <input type="checkbox" name="display-shirts-3"></div>
+                <div>youtube <input type="checkbox" name="display-youtube-0"> <input type="checkbox" name="display-youtube-1"> <input type="checkbox" name="display-youtube-2"> <input type="checkbox" name="display-youtube-3"></div>
+                <div>flash <input type="checkbox" name="display-flash-0"> <input type="checkbox" name="display-flash-1"> <input type="checkbox" name="display-flash-2"> <input type="checkbox" name="display-flash-3"></div>
+                <div>name <input type="checkbox" name="display-dj-name-0" checked> <input type="checkbox" name="display-dj-name-1" checked> <input type="checkbox" name="display-dj-name-2" checked> <input type="checkbox" name="display-dj-name-3" checked></div>
+                <div>emoji <input type="checkbox" name="display-emoji-0"> <input type="checkbox" name="display-emoji-1"> <input type="checkbox" name="display-emoji-2"> <input type="checkbox" name="display-emoji-3"></div>
+                <div>giphy <input type="checkbox" name="display-giphy-0"> <input type="checkbox" name="display-giphy-1"> <input type="checkbox" name="display-giphy-2"> <input type="checkbox" name="display-giphy-3"></div>
         </div>
         <div class="control">
             <button id="tap">Tap</button><label>interval<input type="range" name="interval" min="0" max="5000" value="500" step="1"></label>
@@ -39,6 +43,10 @@
             <div><label>seekTo<input class="auto" type="range" name="seekTo" min="0" max="300" value="5" step="0.1"></label></div>
             <div><label>playbackRate<input class="auto" type="range" name="playbackRate" min="0" max="2" value="1.8" step="0.1"></label></div>
             <div><label>autoMode<input type="checkbox" name="autoMode"></label></div>
+        </div>
+        <div class="control">
+            <div><label>query<input type="text" name="giphy-query" value="dance"></label></div>
+            <div><label>blink<input type="checkbox" name="giphy-blink"></label></div>
         </div>
     </div>
 

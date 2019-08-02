@@ -23,9 +23,10 @@ class VolumeAverage {
 }
 
 class Tapper {
-    constructor(input, tapButton) {
+    constructor(input, tapButton, controller) {
         this.input = input;
         this.tapButton = tapButton;
+        this.controller = controller;
         this.input.addEventListener('change', () => {
             this.change();
         });
@@ -34,6 +35,7 @@ class Tapper {
         });
         this.tappedAt = [];
         this.fxs = [];
+        this.i = 0;
     }
     setFxs(fxs) {
         this.fxs = fxs;
@@ -44,13 +46,16 @@ class Tapper {
         this.calculate();
     }
     onBeatCallbacks() {
+        this.i++;
         if (this.timer) {
             clearTimeout(this.timer);
         }
         this.timer = setTimeout(() => {
             this.onBeatCallbacks();
         }, tapper.input.value);
+        const parameters = this.controller.collectParameters();
         for (let fx of this.fxs) {
+            fx.onBeatTogggleDisplay(parameters, this.i);
             if (fx.isActive) fx.onBeat();
         }
 
@@ -95,7 +100,7 @@ class Controller {
     onParametersChange() {
         const parameters = this.collectParameters();
         for (let fx of this.fxs) {
-            fx.onParametersChangeTogggleDisplay(parameters);
+            // fx.onParametersChangeTogggleDisplay(parameters);
             if (fx.isActive) fx.onParametersChange(parameters);
         }
     }
@@ -123,12 +128,12 @@ class Animator {
 
     onFrame() { }
     onBeat() { }
-    onParametersChange(parameters) { }
-    onParametersChangeTogggleDisplay(parameters) {
-        const screenKey = `display-${this.screenName}`;
+    onBeatTogggleDisplay(parameters, i) {
+        const screenKey = `display-${this.screenName}-${i % 4}`;
         this.isActive = parameters[screenKey];
         this.screen.classList.toggle('hidden', ! this.isActive);
     }
+    onParametersChange(parameters) { }
 }
 
 class Flash extends Animator {
@@ -220,6 +225,49 @@ class Emoji extends Animator {
     }
 }
 
+class Giphy extends Animator {
+    constructor(selector) {
+        super(selector);
+        this.i = 0;
+        this.imgElement = this.screen.querySelector('img');
+    }
+
+    onParametersChange(parameters) {
+        const query = parameters['giphy-query'];
+        if (query && this.query !== query) {
+            this.query = query;
+            this.search(query);
+        }
+    }
+
+    async search(query) {
+        const API_KEY = 'LBAjpMNw9QePkkxmlrN3LP3qD9m1qlBz';
+        const response = await (await fetch(`https://api.giphy.com/v1/stickers/search?q=${encodeURIComponent(this.query)}&api_key=${API_KEY}&limit=50`)).json();
+        this.images = response.data.map(item => {
+            return item.images.downsized_large.url;
+        });
+    }
+
+    nextImage() {
+        if (!this.images) return;
+        return this.images[this.i++ % (this.images.length + 1)];
+    }
+
+    onBeat() {
+        const parameters = controller.collectParameters();
+        this.onParametersChange(parameters);
+        const url = this.nextImage();
+        if (parameters['giphy-blink']) {
+            const hidden = this.i % 2;
+            this.imgElement.classList.toggle('hidden', hidden);
+            if (hidden) return;
+        }
+        if (url) {
+            this.imgElement.src = url;
+        }
+    }
+}
+
 class YouTube extends Animator {
     onIframeAPIReady() {
         this.player = new YT.Player('youtube-video', {
@@ -285,12 +333,14 @@ const volume = new VolumeAverage();
 const tapper = new Tapper(
     document.querySelector('input[name="interval"]'),
     document.querySelector('button#tap'),
+    controller,
 );
 const fxs = [
     new Flash('flash'),
     new MochiText('dj-name'),
     new Shirts('shirts'),
     new Emoji('emoji'),
+    new Giphy('giphy'),
     youtube,
 ];
 controller.setFxs(fxs);

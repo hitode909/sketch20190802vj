@@ -23,7 +23,7 @@ html,body {
     justify-content: center;
     pointer-events: none;
 }
-.screen.hidden {
+.hidden {
     display: none;
 }
 
@@ -34,6 +34,12 @@ html,body {
     height: 100vh;
     width: auto;
 }
+
+.screen.giphy img {
+    height: 100vh;
+    width: 100vw;
+}
+
 
 #youtube-video {
     width: 100vw;
